@@ -115,7 +115,7 @@ class ChatListActivity: BaseActivity() {
             itemView.apply {
                 chat_list_item_name.text = chatInfo.chatName
                 chat_list_item_content.text = chatInfo.content
-                chat_list_item_name.setOnClickListener {
+                setOnClickListener {
                     it.context.startActivity(Intent(it.context, PersonChatActivity::class.java).apply {
                         putExtra(EXTRA_KEY_CHAT_TYPE, curChatType)
                         putExtra(EXTRA_KEY_CHAT_NAME, chatInfo.chatName)

@@ -14,7 +14,7 @@ import androidx.room.Query
  */
 @Dao
 interface WatchChatWXDao {
-    @Query("SELECT * FROM watch_chat_list WHERE chat_type=:chatType ORDER BY timestamp DESC")
+    @Query("SELECT * FROM watch_chat_list WHERE chat_type=:chatType GROUP BY chat_name ORDER BY timestamp DESC")
     fun queryAllChatList(chatType: String) : LiveData<List<WatchChatInfo>>
 
     @Query("SELECT * FROM watch_chat_list WHERE chat_type=:chatType AND chat_name=:chatName ORDER BY timestamp DESC")

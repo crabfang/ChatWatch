@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.TimeUtils
 import com.cabe.app.watch.R
 import com.cabe.app.watch.db.DBHelper
 import com.cabe.app.watch.db.WatchChatInfo
 import com.cabe.app.watch.widget.WaitingDialog
 import com.cabe.app.watch.widget.toast
 import kotlinx.android.synthetic.main.activity_chat_list.*
-import kotlinx.android.synthetic.main.chat_list_item_layout.view.*
+import kotlinx.android.synthetic.main.chat_person_item_layout.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 const val EXTRA_KEY_CHAT_NAME = "extraKeyChatName"
 class PersonChatActivity: BaseActivity() {
@@ -99,6 +102,7 @@ class PersonChatActivity: BaseActivity() {
     }
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val format = SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", Locale.getDefault())
         companion object {
             fun create(parent: ViewGroup): MyViewHolder {
                 return MyViewHolder(
@@ -110,9 +114,9 @@ class PersonChatActivity: BaseActivity() {
                 )
             }
         }
-
         fun bind(chatInfo: WatchChatInfo) {
             itemView.apply {
+                chat_list_item_time.text = format.format(chatInfo.timestamp)
                 chat_list_item_content.text = chatInfo.content
                 itemView.setOnLongClickListener {
                     AlertDialog.Builder(it.context).apply {

@@ -71,14 +71,17 @@ class NotificationService: NotificationListenerService() {
         return text
     }
 
-    @SuppressLint("ObsoleteSdkInt")
     private fun handleWeChat(sbn: StatusBarNotification) {
         val notification = sbn.notification ?: return
         val extras = notification.extras
         if (extras != null) { // 获取通知标题
             val title = extras.getString(Notification.EXTRA_TITLE, "")
             // 获取通知内容
-            val content = extras.getString(Notification.EXTRA_TEXT, "")
+            var content = extras.getString(Notification.EXTRA_TEXT, "")
+            val index = content.indexOf(": ")
+            if(index >= 0) {
+                content = content.substring(index + 2)
+            }
             Log.w("AppDebug", "Notification: $title _ $content")
             DBHelper.insertChat(
                 WatchChatInfo(
