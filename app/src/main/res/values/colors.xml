@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#357DF9</color>
+    <color name="colorPrimaryDark">#357DF9</color>
+    <color name="colorPrimaryLight">#327BF9</color>
+    <color name="colorAccent">#357DF9</color>
+    <color name="theme_bg_color">#FEFEFE</color>
+    <color name="app_theme_click_bg">#22000000</color>
+</resources>
