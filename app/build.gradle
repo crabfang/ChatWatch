@@ -29,6 +29,12 @@ android {
         }
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.cabe
+            debuggable true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             signingConfig signingConfigs.cabe
             minifyEnabled true
