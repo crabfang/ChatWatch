@@ -20,9 +20,20 @@ android {
             }
         }
     }
+    signingConfigs {
+        cabe {
+            storeFile file("cabe.keystore")
+            keyAlias "cabe"
+            keyPassword "19871010"
+            storePassword "19871010"
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.cabe
+            minifyEnabled true
+            debuggable false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
