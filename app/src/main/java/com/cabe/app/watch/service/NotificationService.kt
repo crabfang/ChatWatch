@@ -27,9 +27,9 @@ class NotificationService: NotificationListenerService() {
             val title = extras.getString(Notification.EXTRA_TITLE, "")
             // 获取通知内容
             var content = extras.getString(Notification.EXTRA_TEXT, "")
-            val index = content.indexOf(": ")
+            val index = content.indexOf("]")
             if(index >= 0) {
-                content = content.substring(index + 2)
+                content = content.substring(index + 1)
             }
             Log.w("AppDebug", "Notification: $title _ $content")
             DBHelper.insertChat(

@@ -3,6 +3,7 @@ package com.cabe.app.watch.service
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.content.pm.PackageManager
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import com.cabe.app.watch.plugin.IPlugin
 import com.cabe.app.watch.plugin.WeChatPlugin
@@ -15,6 +16,7 @@ class WatchService: AccessibilityService() {
     var currentActivityName = ""
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        Log.w("AppDebug", "watch event type: ${AccessibilityEvent.eventTypeToString(event?.eventType ?: AccessibilityEvent.TYPE_VIEW_CLICKED)}")
         setCurrentActivityName(event)
 
         var plugin: IPlugin? = null
