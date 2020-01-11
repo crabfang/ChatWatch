@@ -43,6 +43,9 @@ class RemoteListActivity: BaseActivity() {
                 KeyboardUtils.hideSoftInput(it)
                 DBHelper.queryRemoteData(tableName, chatName) { dataList ->
                     adapter.dataList = dataList
+                    if(dataList == null || dataList.isEmpty()) {
+                        ToastUtils.showShort("暂无数据")
+                    }
                 }
             }
         }
