@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="wrap_content"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:paddingLeft="10dp"
@@ -13,8 +13,10 @@
 
     <TextView
         android:id="@+id/chat_list_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="#333333"
         android:textSize="12sp"
         tools:text="ChatName"
@@ -26,15 +28,28 @@
         android:id="@+id/chat_list_item_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:maxLines="2"
         android:ellipsize="end"
         android:textColor="#999999"
         android:textSize="12sp"
         tools:text="ChatContentasdflkjasdfcxlkadsfweoiasdklfasdfweoisklafweiolksadflkweoilas;dlkfweori"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/chat_list_item_name"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toLeftOf="@+id/chat_list_item_time" />
+
+    <TextView
+        android:id="@+id/chat_list_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        tools:text="2020-01-11\n12:00:00"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

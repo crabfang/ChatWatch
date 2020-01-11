@@ -16,7 +16,7 @@ class WatchService: AccessibilityService() {
     var currentActivityName = ""
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        Log.w("AppDebug", "watch event type: ${AccessibilityEvent.eventTypeToString(event?.eventType ?: AccessibilityEvent.TYPE_VIEW_CLICKED)}")
+        Log.i("AppDebug", "watch event type: ${AccessibilityEvent.eventTypeToString(event?.eventType ?: AccessibilityEvent.TYPE_VIEW_CLICKED)}")
         setCurrentActivityName(event)
 
         var plugin: IPlugin? = null

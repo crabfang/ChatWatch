@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.blankj.utilcode.util.TimeUtils
 import com.cabe.app.watch.R
 import com.cabe.app.watch.db.DBHelper
 import com.cabe.app.watch.db.WatchChatInfo
@@ -102,7 +101,7 @@ class PersonChatActivity: BaseActivity() {
     }
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val format = SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", Locale.getDefault())
+        private val format = SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", Locale.getDefault())
         companion object {
             fun create(parent: ViewGroup): MyViewHolder {
                 return MyViewHolder(

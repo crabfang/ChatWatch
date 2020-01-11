@@ -13,6 +13,8 @@ import com.cabe.app.watch.widget.WaitingDialog
 import com.cabe.app.watch.widget.toast
 import kotlinx.android.synthetic.main.activity_chat_list.*
 import kotlinx.android.synthetic.main.chat_list_item_layout.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 const val EXTRA_KEY_CHAT_TYPE = "extraKeyChatType"
 class ChatListActivity: BaseActivity() {
@@ -109,12 +111,14 @@ class ChatListActivity: BaseActivity() {
                 )
             }
         }
+        private val format = SimpleDateFormat("yyyy-MM-dd\nHH:mm:ss", Locale.getDefault())
         var curChatType: String= ""
 
         fun bind(chatInfo: WatchChatInfo) {
             itemView.apply {
                 chat_list_item_name.text = chatInfo.chatName
                 chat_list_item_content.text = chatInfo.content
+                chat_list_item_time.text = format.format(chatInfo.timestamp)
                 setOnClickListener {
                     it.context.startActivity(Intent(it.context, PersonChatActivity::class.java).apply {
                         putExtra(EXTRA_KEY_CHAT_TYPE, curChatType)
