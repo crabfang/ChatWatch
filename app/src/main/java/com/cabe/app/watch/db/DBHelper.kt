@@ -7,6 +7,7 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.QueryListener
 import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.cabe.app.watch.ui.SP_KEY_REMOTE_TABLE
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
@@ -31,7 +32,10 @@ class DBHelper {
             }
             query.findObjectsByTable(object: QueryListener<JSONArray>() {
                 override fun done(array: JSONArray?, e: BmobException?) {
-                    e?.printStackTrace()
+                    if(e != null) {
+                        e.printStackTrace()
+                        ToastUtils.showShort(e.message)
+                    }
                     if(array != null) {
                        val dataList = GsonUtils.fromJson<MutableList<BChatInfo>>(array.toString(), object: TypeToken<MutableList<BChatInfo>>(){}.type)
                         remoteCallback(dataList)

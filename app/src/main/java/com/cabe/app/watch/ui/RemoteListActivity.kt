@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.blankj.utilcode.util.KeyboardUtils
 import com.blankj.utilcode.util.SPUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.cabe.app.watch.R
@@ -39,6 +40,7 @@ class RemoteListActivity: BaseActivity() {
                 ToastUtils.showShort("input str")
             } else {
                 SPUtils.getInstance().put(SP_KEY_LAST_TABLE, tableName)
+                KeyboardUtils.hideSoftInput(it)
                 DBHelper.queryRemoteData(tableName, chatName) { dataList ->
                     adapter.dataList = dataList
                 }
