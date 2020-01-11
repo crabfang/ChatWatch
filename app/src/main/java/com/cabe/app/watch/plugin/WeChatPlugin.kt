@@ -119,7 +119,9 @@ class WeChatPlugin : IPlugin {
                     if(isCollectionEmpty(names)) null
                     else names[0].text
                 }
-                curChatName = chatName.toString()
+                if(curChatName == null) {
+                    curChatName = chatName.toString()
+                }
                 Log.w("AppDebug", "chat detail: $chatName @ $editText | $curInputStr")
             }
         }

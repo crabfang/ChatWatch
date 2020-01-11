@@ -27,6 +27,9 @@ interface WatchChatWXDao {
     fun deleteChatInfo(timestamp: Long)
 
     @Query("DELETE FROM watch_chat_list WHERE chat_type=:chatType AND chat_name=:chatName")
+    fun deleteChatName(chatType: String, chatName: String)
+
+    @Query("DELETE FROM watch_chat_list WHERE chat_type=:chatType AND chat_name=:chatName")
     fun removeChatByName(chatType: String, chatName: String)
 
     @Query("DELETE FROM watch_chat_list WHERE chat_type=:chatType")

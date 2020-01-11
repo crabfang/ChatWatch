@@ -34,6 +34,18 @@ class DBHelper {
             }
         }
 
+        fun deleteChatByName(chatInfo: WatchChatInfo, callback: () -> Unit) {
+            val block: suspend CoroutineScope.() -> Unit = {
+                AppDatabase.getInstance().watchChatDao().deleteChatName(chatInfo.type, chatInfo.chatName)
+                withContext(Dispatchers.Main) {
+                    callback()
+                }
+            }
+            GlobalScope.launch {
+                block()
+            }
+        }
+
         fun deleteChatByName(chatType: String, name: String, callback: () -> Unit) {
             val block: suspend CoroutineScope.() -> Unit = {
                 AppDatabase.getInstance().watchChatDao().removeChatByName(chatType, name)

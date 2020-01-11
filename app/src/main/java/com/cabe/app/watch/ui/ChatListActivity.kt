@@ -131,7 +131,7 @@ class ChatListActivity: BaseActivity() {
                         setMessage("确定要删除该记录吗")
                         setPositiveButton("删除") { dialog, _ ->
                             dialog.dismiss()
-                            DBHelper.deleteChat(chatInfo) {
+                            DBHelper.deleteChatByName(chatInfo) {
                                 toast("删除成功")
                             }
                         }
