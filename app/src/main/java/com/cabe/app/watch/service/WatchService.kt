@@ -45,7 +45,7 @@ class WatchService: AccessibilityService() {
             currentPackageName = componentName.packageName
             currentActivityName = componentName.flattenToShortString()
         } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+            Log.e("AppDebug", "setCurrentActivityName error")
         }
     }
     override fun onInterrupt() {

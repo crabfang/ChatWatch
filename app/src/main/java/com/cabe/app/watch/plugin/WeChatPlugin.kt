@@ -69,7 +69,7 @@ class WeChatPlugin : IPlugin {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.w("AppDebug", "parseTime2Long error $timeStr")
             null
         }
     }
@@ -97,7 +97,8 @@ class WeChatPlugin : IPlugin {
                             CHAT_TYPE_WX,
                             chatTimestamp,
                             chatName.toString(),
-                            chatContent.toString()
+                            chatContent.toString(),
+                            ""
                         )
                     )
                 }
@@ -146,7 +147,8 @@ class WeChatPlugin : IPlugin {
                     CHAT_TYPE_WX,
                     System.currentTimeMillis(),
                     curChatName?:"",
-                    "我：$curInputStr"
+                    "我：$curInputStr",
+                    ""
                 )
             )
         }

@@ -1,10 +1,45 @@
 package com.cabe.app.watch.db
 
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
+import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.QueryListener
+import com.blankj.utilcode.util.GsonUtils
+import com.blankj.utilcode.util.SPUtils
+import com.cabe.app.watch.ui.SP_KEY_REMOTE_TABLE
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
+import org.json.JSONArray
 
+const val REMOTE_TABLE_DEFAULT = "Remote"
 class DBHelper {
     companion object {
+        private const val tableSuffix = "Table"
+        private fun getRemoteTable(): String {
+            val prefix = SPUtils.getInstance().getString(SP_KEY_REMOTE_TABLE, REMOTE_TABLE_DEFAULT)
+            return "${prefix}$tableSuffix"
+        }
+
+        fun queryRemoteData(tableName: String, chatName: String?, remoteCallback: (dataList: MutableList<BChatInfo>?) -> Unit) {
+            if(TextUtils.isEmpty(tableName)) return
+
+            val query = BmobQuery<JSONArray>("${tableName}$tableSuffix")
+                .order("timestamp")
+            if(!TextUtils.isEmpty(chatName)) {
+                query.addWhereEqualTo("chatName", chatName)
+            }
+            query.findObjectsByTable(object: QueryListener<JSONArray>() {
+                override fun done(array: JSONArray?, e: BmobException?) {
+                    e?.printStackTrace()
+                    if(array != null) {
+                       val dataList = GsonUtils.fromJson<MutableList<BChatInfo>>(array.toString(), object: TypeToken<MutableList<BChatInfo>>(){}.type)
+                        remoteCallback(dataList)
+                    }
+                }
+            })
+        }
+
         fun queryChatListAll(chatType: String): LiveData<List<WatchChatInfo>> {
             return AppDatabase.getInstance().watchChatDao().queryAllChatList(chatType)
         }
@@ -15,7 +50,21 @@ class DBHelper {
 
         fun insertChat(chatInfo: WatchChatInfo) {
             val block: suspend CoroutineScope.() -> Unit = {
-                AppDatabase.getInstance().watchChatDao().insertChatInfo(chatInfo)
+                val tableName = getRemoteTable()
+                val objectId = try {
+                    BChatInfo(
+                        chatInfo.type,
+                        chatInfo.timestamp,
+                        chatInfo.chatName,
+                        chatInfo.content
+                    ).apply {
+                        this.tableName = tableName
+                    }.saveSync()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    ""
+                }
+                AppDatabase.getInstance().watchChatDao().insertChatInfo(chatInfo.apply { bMobId = objectId })
             }
             GlobalScope.launch {
                 block()

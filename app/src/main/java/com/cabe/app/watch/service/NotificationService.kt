@@ -37,7 +37,8 @@ class NotificationService: NotificationListenerService() {
                     CHAT_TYPE_WX,
                     System.currentTimeMillis(),
                     title,
-                    content
+                    content,
+                    ""
                 )
             )
         }
@@ -56,7 +57,8 @@ class NotificationService: NotificationListenerService() {
                     CHAT_TYPE_QQ,
                     System.currentTimeMillis(),
                     title,
-                    content
+                    content,
+                    ""
                 )
             )
         }

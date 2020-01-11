@@ -7,19 +7,35 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.TextUtils
 import android.view.accessibility.AccessibilityManager
 import androidx.core.app.NotificationManagerCompat
+import com.blankj.utilcode.util.KeyboardUtils
+import com.blankj.utilcode.util.SPUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.cabe.app.watch.R
+import com.cabe.app.watch.db.REMOTE_TABLE_DEFAULT
 import com.cabe.app.watch.service.WatchService
 import kotlinx.android.synthetic.main.activity_main.*
 
 const val CHAT_TYPE_WX = "chatTypeWX"
 const val CHAT_TYPE_QQ = "chatTypeQQ"
+
+const val SP_KEY_REMOTE_TABLE = "spKeyRemoteTable"
 class MainActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         canBack = false
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        activity_main_btn_save.setOnClickListener {
+            val tableName = activity_main_edit_table.text.toString()
+            if(!TextUtils.isEmpty(tableName)) {
+                SPUtils.getInstance().put(SP_KEY_REMOTE_TABLE, tableName)
+                activity_main_edit_table.clearFocus()
+                ToastUtils.showShort("保存成功")
+                KeyboardUtils.hideSoftInput(it)
+            }
+        }
         activity_main_btn_service.setOnClickListener {
             openServiceSetting()
         }
@@ -32,6 +48,12 @@ class MainActivity: BaseActivity() {
         activity_main_btn_chat_qq.setOnClickListener {
             openChatList(CHAT_TYPE_QQ)
         }
+        activity_main_btn_chat_remote.setOnClickListener {
+            startActivity(Intent(this, RemoteListActivity::class.java))
+        }
+
+        val tableName = SPUtils.getInstance().getString(SP_KEY_REMOTE_TABLE, REMOTE_TABLE_DEFAULT)
+        activity_main_edit_table.setText(tableName)
     }
 
     private fun openChatList(chatType: String) {
@@ -63,7 +85,7 @@ class MainActivity: BaseActivity() {
         return isConnect
     }
 
-    fun openServiceSetting() {
+    private fun openServiceSetting() {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         startActivity(intent)
     }
@@ -76,7 +98,7 @@ class MainActivity: BaseActivity() {
     }
 
     /** 打开通知监听设置页面 */
-    fun openNotificationListenSettings() {
+    private fun openNotificationListenSettings() {
         try {
             val intent: Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)

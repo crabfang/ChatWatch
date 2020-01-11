@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     tools:background="@color/theme_bg_color" >
+
+    <EditText
+        android:id="@+id/activity_main_edit_table"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:inputType="text"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:hint="输入名称"
+        android:autofillHints="输入名称"
+        android:background="@null" />
+
+    <TextView
+        android:id="@+id/activity_main_btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:text="Table保存"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/activity_main_btn_service"
@@ -54,4 +78,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_main_btn_chat_wx" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/activity_main_btn_chat_remote"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:text="RemoteList"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_main_btn_chat_wx" />
+
+</LinearLayout>
