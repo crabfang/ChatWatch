@@ -50,7 +50,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.cabe.lib.ui.widget.LoadMoreRecyclerViewX
         android:id="@+id/activity_chat_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

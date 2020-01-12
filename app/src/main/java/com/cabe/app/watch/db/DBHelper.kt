@@ -22,11 +22,13 @@ class DBHelper {
             return "${prefix}$tableSuffix"
         }
 
-        fun queryRemoteData(tableName: String, chatName: String?, remoteCallback: (dataList: MutableList<BChatInfo>?) -> Unit) {
+        fun queryRemoteData(tableName: String, chatName: String?, offset: Int, remoteCallback: (dataList: MutableList<BChatInfo>?) -> Unit) {
             if(TextUtils.isEmpty(tableName)) return
 
             val query = BmobQuery<JSONArray>("${tableName}$tableSuffix")
-                .order("timestamp")
+                .setLimit(100)
+                .order("-timestamp")
+                .setSkip(offset)
             if(!TextUtils.isEmpty(chatName)) {
                 query.addWhereEqualTo("chatName", chatName)
             }
