@@ -110,7 +110,9 @@ class RemoteListActivity: BaseActivity() {
             itemView.apply {
                 chat_list_item_name.text = chatInfo.chatName
                 chat_list_item_content.text = chatInfo.content
-                chat_list_item_time.text = format.format(chatInfo.timestamp)
+                val type = if(chatInfo.type == CHAT_TYPE_WX) "WX" else if(chatInfo.type == CHAT_TYPE_QQ) "QQ" else ""
+                chat_list_item_time.text = "${format.format(chatInfo.timestamp)}$type"
+                setBackgroundResource(if(chatInfo.type == CHAT_TYPE_QQ) R.drawable.selector_btn_bg_yellow else R.drawable.selector_btn_bg_white)
             }
         }
     }
