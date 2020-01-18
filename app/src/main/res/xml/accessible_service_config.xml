@@ -6,6 +6,6 @@
     android:accessibilityFeedbackType="feedbackAllMask"
     android:packageNames="com.tencent.mm"
     android:notificationTimeout="10"
-    android:settingsActivity="com.cabe.app.watch.MainActivity"
+    android:settingsActivity="com.cabe.app.watch.ui.MainActivity"
     android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="true" />
