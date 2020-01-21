@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">安全插件</string>
-    <string name="app_desc">守护</string>
+    <string name="app_name">安全守护</string>
+    <string name="app_desc">守护安全</string>
 </resources>
