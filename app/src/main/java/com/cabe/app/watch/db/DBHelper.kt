@@ -67,7 +67,6 @@ class DBHelper {
                         this.tableName = tableName
                     }.saveSync()
                 } catch (e: Exception) {
-                    e.printStackTrace()
                     ""
                 }
                 AppDatabase.getInstance().watchChatDao().insertChatInfo(chatInfo.apply { bMobId = objectId })

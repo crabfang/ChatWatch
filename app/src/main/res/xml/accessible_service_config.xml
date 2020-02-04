@@ -4,8 +4,8 @@
     android:description="@string/app_desc"
     android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeWindowsChanged|typeAllMask"
     android:accessibilityFeedbackType="feedbackAllMask"
-    android:packageNames="com.tencent.mm"
-    android:notificationTimeout="10"
+    android:packageNames="com.tencent.mm,com.tencent.mobileqq,com.alibaba.android.rimet"
+    android:notificationTimeout="20"
     android:settingsActivity="com.cabe.app.watch.ui.MainActivity"
     android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="true" />

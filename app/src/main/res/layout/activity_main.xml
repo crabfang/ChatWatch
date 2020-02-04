@@ -79,6 +79,18 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_main_btn_chat_wx" />
 
     <TextView
+        android:id="@+id/activity_main_btn_chat_dd"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:text="ChatListDD"
+        android:layout_marginTop="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_main_btn_chat_wx" />
+
+    <TextView
         android:id="@+id/activity_main_btn_chat_remote"
         android:layout_width="match_parent"
         android:layout_height="40dp"

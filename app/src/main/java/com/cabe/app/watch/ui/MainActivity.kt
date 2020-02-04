@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 const val CHAT_TYPE_WX = "chatTypeWX"
 const val CHAT_TYPE_QQ = "chatTypeQQ"
+const val CHAT_TYPE_DD = "chatTypeDD"
 
 const val SP_KEY_REMOTE_TABLE = "spKeyRemoteTable"
 class MainActivity: BaseActivity() {
@@ -47,6 +48,9 @@ class MainActivity: BaseActivity() {
         }
         activity_main_btn_chat_qq.setOnClickListener {
             openChatList(CHAT_TYPE_QQ)
+        }
+        activity_main_btn_chat_dd.setOnClickListener {
+            openChatList(CHAT_TYPE_DD)
         }
         activity_main_btn_chat_remote.setOnClickListener {
             startActivity(Intent(this, RemoteListActivity::class.java))

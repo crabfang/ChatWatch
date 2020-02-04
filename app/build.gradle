@@ -11,8 +11,8 @@ android {
         targetSdkVersion androidConfig.targetSdkVersion
 
         applicationId "com.cabe.app.watch"
-        versionCode 7
-        versionName "3.0"
+        versionCode 8
+        versionName "3.1"
 
         javaCompileOptions {
             annotationProcessorOptions {

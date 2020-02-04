@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import com.cabe.app.watch.plugin.DingDingPlugin
 import com.cabe.app.watch.plugin.IPlugin
 import com.cabe.app.watch.plugin.WeChatPlugin
 
@@ -16,12 +17,14 @@ class WatchService: AccessibilityService() {
     var currentActivityName = ""
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        Log.i("AppDebug", "watch event type: ${AccessibilityEvent.eventTypeToString(event?.eventType ?: AccessibilityEvent.TYPE_VIEW_CLICKED)}")
+        Log.i("AppDebug", "event type: ${AccessibilityEvent.eventTypeToString(event?.eventType ?: AccessibilityEvent.TYPE_VIEW_CLICKED)}")
         setCurrentActivityName(event)
 
         var plugin: IPlugin? = null
         if (WeChatPlugin.PLUGIN_PACKAGE_NAME == currentPackageName) {
             plugin = WeChatPlugin()
+        } else if (DingDingPlugin.PLUGIN_PACKAGE_NAME == currentPackageName) {
+            plugin = DingDingPlugin()
         }
 
         if (plugin == null) return
@@ -33,16 +36,16 @@ class WatchService: AccessibilityService() {
     }
 
     private fun setCurrentActivityName(event: AccessibilityEvent?) {
-        if (event == null) {
+        if (event == null || event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             return
         }
         try {
+            currentPackageName = event.packageName.toString()
             val componentName = ComponentName(
-                event.packageName.toString(),
+                currentPackageName,
                 event.className.toString()
             )
             packageManager.getActivityInfo(componentName, 0)
-            currentPackageName = componentName.packageName
             currentActivityName = componentName.flattenToShortString()
         } catch (e: PackageManager.NameNotFoundException) {
             Log.e("AppDebug", "setCurrentActivityName error")
