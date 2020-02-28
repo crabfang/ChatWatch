@@ -157,7 +157,8 @@ class WeChatPlugin : IPlugin {
                         Log.d("AppDebugChat", "chat item: $firstClass $secondClass")
                         val fromType = if(firstClass == "android.widget.ImageView") wechatContentFromOther else wechatContentFromMine
                         findFirstNode(itemView,"pq")?.let {
-                            val content = if(fromType == wechatContentFromOther) "对方发送文本" else "我：$curInputStr"
+                            val mineContent = if(curInputStr == null) "我从电脑端发送文本" else "我：$curInputStr"
+                            val content = if(fromType == wechatContentFromOther) "对方发送文本" else mineContent
                             recordChat(
                                 WatchChatInfo(
                                     CHAT_TYPE_WX,
