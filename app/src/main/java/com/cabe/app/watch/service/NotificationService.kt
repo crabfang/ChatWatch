@@ -24,7 +24,7 @@ class NotificationService: NotificationListenerService() {
         val notification = sbn.notification ?: return
         val extras = notification.extras
         if (extras != null) { // 获取通知标题
-            val title = extras.getString(Notification.EXTRA_TITLE, "")
+            val title = getTitle(extras.getString(Notification.EXTRA_TITLE, ""))
             // 获取通知内容
             var content = extras.getString(Notification.EXTRA_TEXT, "")
             val index = content.indexOf("]")
@@ -48,7 +48,7 @@ class NotificationService: NotificationListenerService() {
         val notification = sbn.notification ?: return
         val extras = notification.extras
         if (extras != null) { // 获取通知标题
-            val title = extras.getString(Notification.EXTRA_TITLE, "")
+            val title = getTitle(extras.getString(Notification.EXTRA_TITLE, ""))
             // 获取通知内容
             val content = extras.getString(Notification.EXTRA_TEXT, "")
             Log.w("AppDebug", "Notification: $title _ $content")
@@ -63,4 +63,15 @@ class NotificationService: NotificationListenerService() {
             )
         }
     }
+}
+
+fun getTitle(str: String): String {
+    var newTitle = str
+    if(str.endsWith(")")) {
+        val subIndex = str.indexOfLast { it == '(' }
+        if(subIndex > 0) {
+            newTitle = str.substring(0, subIndex)
+        }
+    }
+    return newTitle
 }
