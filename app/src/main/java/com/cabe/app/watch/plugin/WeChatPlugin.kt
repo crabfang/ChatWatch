@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService
 import android.text.TextUtils
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import com.cabe.app.watch.db.DBHelper
 import com.cabe.app.watch.db.WatchChatInfo
 import com.cabe.app.watch.ui.CHAT_TYPE_WX
@@ -13,6 +14,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class WeChatPlugin : IPlugin {
+    private val wechatContentFromOther = 1
+    private val wechatContentFromMine = 2
+
     private var currentPkgName = ""
     private var currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY
     private var service: AccessibilityService? = null
@@ -69,7 +73,7 @@ class WeChatPlugin : IPlugin {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
         } catch (e: Exception) {
-            Log.w("AppDebug", "parseTime2Long error $timeStr")
+            Log.i("AppDebug", "parseTime2Long error $timeStr")
             null
         }
     }
@@ -123,7 +127,7 @@ class WeChatPlugin : IPlugin {
                 if(curChatName == null) {
                     curChatName = chatName.toString()
                 }
-                Log.w("AppDebug", "chat detail: $chatName @ $editText | $curInputStr")
+                Log.i("AppDebug", "chat detail: $chatName @ $editText | $curInputStr")
             }
         }
     }
@@ -139,20 +143,83 @@ class WeChatPlugin : IPlugin {
         }
     }
 
-    private fun recordInput() {
-        Log.w("AppDebug", "chat record input: $curChatName $curInputStr")
-        if(!TextUtils.isEmpty(curChatName) && !TextUtils.isEmpty(curInputStr)) {
-            recordChat(
-                WatchChatInfo(
-                    CHAT_TYPE_WX,
-                    System.currentTimeMillis(),
-                    curChatName?:"",
-                    "我：$curInputStr",
-                    ""
-                )
-            )
+    private fun recordInput(event: AccessibilityEvent) {
+        val nodeList = event.source?.findAccessibilityNodeInfosByViewId(generateID("ag"))
+        if(nodeList == null || nodeList.isEmpty()) return
+
+        nodeList.first()?.let { listView ->
+            if(listView.childCount > 0) {
+                val contentNodes = listView.getChild(listView.childCount - 1).findAccessibilityNodeInfosByViewId(generateID("ab"))
+                if(contentNodes?.size ?: 0 > 0) {
+                    contentNodes.first().let { itemView ->
+                        val firstClass = itemView.getChild(0).className
+                        val secondClass = itemView.getChild(1).className
+                        Log.d("AppDebugChat", "chat item: $firstClass $secondClass")
+                        val fromType = if(firstClass == "android.widget.ImageView") wechatContentFromOther else wechatContentFromMine
+                        findFirstNode(itemView,"pq")?.let {
+                            val content = if(fromType == wechatContentFromOther) "对方发送文本" else "我：$curInputStr"
+                            recordChat(
+                                WatchChatInfo(
+                                    CHAT_TYPE_WX,
+                                    System.currentTimeMillis(),
+                                    curChatName?:"",
+                                    content,
+                                    ""
+                                )
+                            )
+                        }
+                        findFirstNode(itemView,"atb")?.let {
+                            val content = if(fromType == wechatContentFromOther) "对方发送图片" else "我发送图片"
+                            recordChat(
+                                WatchChatInfo(
+                                    CHAT_TYPE_WX,
+                                    System.currentTimeMillis(),
+                                    curChatName?:"",
+                                    content,
+                                    ""
+                                )
+                            )
+                        }
+                        findFirstNode(itemView,"atb")?.let { web ->
+                            findFirstNode(web, "atq")?.let { title ->
+                                val titleStr = title.text
+                                val content = if(fromType == wechatContentFromOther) "对方分享网页:$titleStr" else "我分享网页:$titleStr"
+                                recordChat(
+                                    WatchChatInfo(
+                                        CHAT_TYPE_WX,
+                                        System.currentTimeMillis(),
+                                        curChatName?:"",
+                                        content,
+                                        ""
+                                    )
+                                )
+                            }
+                        }
+                        findFirstNode(itemView,"atc")?.let { program ->
+                            val titleStr = findFirstNode(program, "atf")?.text
+                            val content = if(fromType == wechatContentFromOther) "对方分享小程序:$titleStr" else "我分享小程序:$titleStr"
+                            recordChat(
+                                WatchChatInfo(
+                                    CHAT_TYPE_WX,
+                                    System.currentTimeMillis(),
+                                    curChatName?:"",
+                                    content,
+                                    ""
+                                )
+                            )
+                        }
+                    }
+                }
+            }
         }
         curInputStr = null
+    }
+
+    private fun findFirstNode(node: AccessibilityNodeInfo, id: String): AccessibilityNodeInfo? {
+        return node.parent.findAccessibilityNodeInfosByViewId(generateID(id))?.let {
+            if(it.size > 0) it.first()
+            else null
+        }
     }
 
     override fun handleEvent(event: AccessibilityEvent) {
@@ -162,7 +229,7 @@ class WeChatPlugin : IPlugin {
         }
         when(event.eventType) {
             AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED, AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED -> watchInput(event)
-            AccessibilityEvent.TYPE_VIEW_SCROLLED -> recordInput()
+            AccessibilityEvent.TYPE_VIEW_SCROLLED -> recordInput(event)
         }
     }
 
