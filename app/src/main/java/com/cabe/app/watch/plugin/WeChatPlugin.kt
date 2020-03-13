@@ -169,8 +169,10 @@ class WeChatPlugin : IPlugin {
                                 )
                             )
                         }
-                        findFirstNode(itemView,"atb")?.let {
-                            val content = if(fromType == wechatContentFromOther) "对方发送图片" else "我发送图片"
+                        findFirstNode(itemView,"atb")?.let { item ->
+                            val file = findFirstNode(item, "atp")
+                            val fileType = if(file == null) "图片" else "文件"
+                            val content = if(fromType == wechatContentFromOther) "对方发送$fileType" else "我发送$fileType"
                             recordChat(
                                 WatchChatInfo(
                                     CHAT_TYPE_WX,
